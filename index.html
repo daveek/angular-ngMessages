@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="formApp">
+
+<head>
+  <meta charset="utf-8" />
+  <link href="https://fonts.googleapis.com/css?family=Indie+Flower" rel="stylesheet" type="text/css" />
+  <link href="css/bootstrap.min.css" rel="stylesheet" media="screen">
+  <link href="css/bootstrap-theme.min.css" rel="stylesheet" media="screen">
+  <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script>
+  <script type="text/javascript" src="js/bootstrap.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.6/angular.min.js"></script>
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/angular-messages/1.5.6/angular-messages.js"></script>
+  <script type="text/javascript" src="js/app.js"></script>
+  <style>
+    body, input, select,  textarea {
+      font-family: "Indie Flower";
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    p {
+      font-family: "Indie Flower";
+      font-size: 14px;
+      color: red;
+    }
+
+    .form-group {
+      width: 70%;
+    }
+    
+  </style>
+</head>
+
+<body ng-controller="MainCtrl">
+  <form class="form-horizontal" name="userForm" novalidate>
+    <div class="form-group">   
+        <label for="username" class="col-sm-2 control-label">UserNme</label>
+      <div class="col-sm-10">
+        <input type="text" class="form-control" name="userName" ng-minlength="2" ng-maxlength="8"  ng-pattern="/^[a-z]*$/" ng-model="formData.user" required placeholder="Username">
+        <div ng-messages="userForm.userName.$error" style="color:red" role="alert">
+          <span ng-message="required">Introduzca Usuario</span>
+          <span ng-message="minlength">Nombre de usuario muy corto</span>
+          <span ng-message="maxlength">Nombre de usuario muy largo</span>
+          <span ng-message="pattern">Usuario solo en minusculas</span>
+        </div>
+      </div>    
+    </div>
+
+
+    <div class="form-group">
+      <label for="email" class="col-sm-2 control-label">Email</label>
+      <div class="col-sm-10">      
+        <!-- <input type="email" ng-model="myEmail" overwrite-email name="overwrittenEmail" class="form-control" id="email" placeholder="Email" />
+        <span ng-show="userForm.overwrittenEmail.$error.email">El formato del email es inválido!</span><br> -->
+
+        <input type="email" ng-model="formData.email" ng-pattern="/^[a-zA-Z0-9!#$%'*+/=?^_`{|}~.-]+@ejemplo\.org/" class="form-control" name="email" required placeholder="Email">
+        <div ng-messages="userForm.email.$error" style="color:orange" role="alert">
+          <span ng-message="required">Introduzca email</span>
+          <sapn ng-message="pattern">email incorrecto (debe estar bajo el dominio ejemplo.org)</span>
+        </div>
+       
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="selectDep" class="col-sm-2 control-label">Departamento</label>
+      <div class="col-sm-10">
+        <select ng-model="formData.dpto" name="departamento" ng-options="dpto as dpto for dpto in departamentos"  required>
+          <option ng-if="departamentos.length > 1" value="" selected>Selecciona</option>
+        </select>
+        
+          <div ng-messages="userForm.departamento.$error" style="color:orange" role="alert">
+            <span ng-message="required">selecciona un dpto.</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label for="password" class="col-sm-2 control-label">Password</label>
+      <div class="col-sm-10">
+        <input type="password" class="form-control" ng-maxlength="12" ng-pattern="/(?=.*[A-Z])(?=.*[a-z])(?=.*[0-9].*[0-9])(?=.*[^a-zA-Z0-9]).{8,12}/" name="password" ng-model="formData.pwd" placeholder="Password" required />
+
+        <div ng-messages="userForm.password.$error" style="color:red" role="alert">
+             <span ng-message="required">la clave es requerida</span>
+             <span ng-message="pattern">Recuerde incluir: <br>
+             (1) La 1era en mayuscula <br>
+             (1) minuscula <br>
+             (2) numeros <br>
+             (1) caracter especial <br>
+             no menor de (8)<br>
+             </span>
+             <span ng-message="maxlength">la clave no debe ser mayor de 12 caracteres</span>
+        </div>
+
+        
+      </div>
+    </div>
+
+    <div class="form-group">
+     <label for="comentarios" class="col-sm-2 control-label">Comentarios</label>
+        <div class="col-sm-offset-2 col-sm-10">
+          <textarea ng-model="formData.comentarios" ng-maxlength="255" rows="5" cols="50" name="comentarios"></textarea>
+          <div ng-messages="userForm.comentarios.$error" style="color:green" role="alert">
+            <span ng-message="maxlength">no puede escribir mas de 255 letras</span>
+          </div>
+        </div>
+    </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <label>
+        <input type="checkbox" ng-model="formData.acepta"> Acepto las condiciones
+      </label>
+      <span style="color:orange" ng-show="!formData.acepta" class="ng-hide">Debe aceptar las condiciones</span>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button type="submit" ngClick="submitForm()" class="btn btn-default">Sign in</button>
+    </div>
+  </div>
+
+
+</form>
+
+</body>
+</html>
